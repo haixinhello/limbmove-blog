@@ -1,0 +1,11 @@
+<header class="header">
+  <a class="brand" href="{{ "/" | relURL }}" aria-label="LimbMove Blog 首页">
+    <span class="brand-mark" aria-hidden="true">L<span>↗</span></span>
+    <span>LimbMove<span class="brand-suffix"> / blog</span></span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="{{ "/" | relURL }}"{{ if .IsHome }} aria-current="page"{{ end }}>首页</a>
+    <a href="{{ "posts/" | relURL }}"{{ if eq .RelPermalink "/posts/" }} aria-current="page"{{ else if eq .Section "posts" }} aria-current="location"{{ end }}>文章</a>
+    <a href="{{ "about/" | relURL }}"{{ if eq .RelPermalink "/about/" }} aria-current="page"{{ end }}>关于</a>
+  </nav>
+</header>

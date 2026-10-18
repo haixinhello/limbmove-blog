@@ -2,6 +2,63 @@
 
 这是一个无需下载主题、无需 Node.js 的轻量 Hugo 个人博客源码，目标域名是 `https://blog.limbmove.com/`。
 
+## 日常维护：用自然语言管理
+
+本地项目已连接 `haixinhello/limbmove-blog`，生产分支为 `main`。初次建站步骤保留在下方，日常维护无需重复建仓或配置域名。
+
+你可以直接要求开发助手：
+
+- “把下面的内容发布为一篇博客，标题是……”。助手负责 Markdown、摘要、代码块、图片链接、构建与 Git 提交。
+- “先把这篇保存为草稿”。草稿不会进入生产构建。
+- “修改某篇文章的措辞，保留原链接”。保留原文件名，不随意更改 slug 或 URL。
+- “调整博客排版，先给我预览”。本地验证后展示效果，确认后提交推送。
+
+长期约定见 [AGENTS.md](AGENTS.md)。当前改版需先确认预览效果，再提交并推送。源码、文章和部署产物均为标准 Hugo 静态文件；不依赖数据库、外部字体、前端框架或 Cloudflare 专用运行时。
+
+## 构建与验证
+
+项目验证版本为 **Hugo 0.158.0**，Cloudflare Pages 的生产和预览环境应使用相同版本。无需安装 Node.js。
+
+```sh
+hugo version
+hugo --minify --panicOnWarning
+hugo server --bind 127.0.0.1
+```
+
+修改后检查首页、文章列表、正文、关于页、`/tags/`、`/categories/`、`/404.html`、RSS 和 sitemap；布局变更至少检查 320px、390px、768px 和桌面宽度。确认原有 `/posts/hello-world/` 与 `/posts/markdown-notes/` 继续可访问。
+
+新增文章可由助手直接生成，也可使用 `hugo new content posts/my-project.md`；模板默认 `draft: true`。发布前填写摘要，核对日期（Asia/Shanghai）并改为 `draft: false`。正文中两处及以上的二、三级标题会生成可折叠目录。
+
+## 模板与视觉结构
+
+- `layouts/baseof.html`：公共页面结构。
+- `layouts/partials/`：头部元信息、导航、页脚、文章列表行。
+- `layouts/home.html`、`section.html`、`page.html`：首页、文章列表、正文。
+- `layouts/taxonomy.html`、`term.html`：分类/标签索引及主题文章。
+- `layouts/404.html`：错误页；Cloudflare Pages 和 Nginx 可使用生成的 `404.html`。
+- `static/css/style.css`：按功能分组的样式、响应式与打印规则；样式链接包含内容摘要，更新后会更换缓存地址。
+
+## 未来迁移到 VPS
+
+在同一份源码上执行 `hugo --minify`，把生成的 `public/` 发布到 Nginx 网站目录即可。保留域名、目录结构、尾部斜杠和 HTTPS，文章链接不需要变更。Nginx 示例：
+
+```nginx
+server {
+    listen 80;
+    server_name blog.limbmove.com;
+    root /var/www/limbmove-blog/public;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    error_page 404 /404.html;
+    location = /404.html { internal; }
+}
+```
+
+此片段仅展示静态文件路由；正式迁移另行配置 HTTPS。当前维护不改动主站及任何 DNS 配置。
+
 ## 上传到 GitHub（推荐第一次使用网页操作）
 
 1. 访问 https://github.com/new 新建名为 `limbmove-blog` 的仓库。建议选 **Public**，不要勾选 `Add a README file`（压缩包已经包含）。

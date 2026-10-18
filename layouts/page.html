@@ -1,8 +1,26 @@
 {{ define "main" }}
+  {{ $isPost := eq .Section "posts" }}
   <article class="article">
-    <a href="{{ if eq .Section "posts" }}/posts/{{ else }}/{{ end }}" class="back">← 返回{{ if eq .Section "posts" }}文章列表{{ else }}首页{{ end }}</a>
-    <header class="article-header"><p class="section-kicker">{{ if eq .Section "posts" }}JOURNAL ENTRY{{ else }}ABOUT{{ end }}</p><h1>{{ .Title }}</h1>{{ if eq .Section "posts" }}<p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年01月02日" }}</time> · {{ .ReadingTime }} 分钟阅读</p>{{ end }}</header>
+    <a href="{{ if $isPost }}{{ "posts/" | relURL }}{{ else }}{{ "/" | relURL }}{{ end }}" class="back">← 返回{{ if $isPost }}文章列表{{ else }}首页{{ end }}</a>
+    <header class="article-header">
+      <p class="section-kicker" lang="en">{{ if $isPost }}JOURNAL ENTRY{{ else }}ABOUT{{ end }}</p>
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="article-description">{{ . }}</p>{{ end }}
+      {{ if $isPost }}<p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年01月02日" }}</time><span aria-hidden="true">/</span>{{ .ReadingTime }} 分钟阅读<span aria-hidden="true">/</span>{{ site.Params.author }}</p>{{ end }}
+    </header>
+    {{ if and $isPost (ge (len (findRE "<a href=" .TableOfContents)) 2) }}
+      <details class="toc" open>
+        <summary>本文目录</summary>
+        {{ .TableOfContents }}
+      </details>
+    {{ end }}
     <div class="prose">{{ .Content }}</div>
-    <div class="article-end"><a href="/posts/">浏览更多文章 →</a></div>
+    {{ if $isPost }}
+      <nav class="post-pagination" aria-label="相邻文章">
+        {{ with .PrevInSection }}<a href="{{ .RelPermalink }}"><span>← 上一篇</span><strong>{{ .Title }}</strong></a>{{ end }}
+        {{ with .NextInSection }}<a href="{{ .RelPermalink }}" class="next-post"><span>下一篇 →</span><strong>{{ .Title }}</strong></a>{{ end }}
+      </nav>
+    {{ end }}
+    <div class="article-end"><a href="{{ "posts/" | relURL }}">浏览更多文章 →</a><a href="#content">回到顶部 ↑</a></div>
   </article>
 {{ end }}

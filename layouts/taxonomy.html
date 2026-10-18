@@ -1,0 +1,12 @@
+{{ define "main" }}
+  <section class="list-page">
+    <header class="page-heading"><p class="section-kicker" lang="en">EXPLORE</p><h1>{{ if eq .Data.Singular "tag" }}标签{{ else }}分类{{ end }}</h1><p class="list-intro">按主题查找文章。</p></header>
+    <div class="term-list">
+      {{ range .Data.Terms.Alphabetical }}
+        <a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}<span>{{ .Count }} 篇</span></a>
+      {{ else }}
+        <p class="empty">暂时没有{{ if eq .Data.Singular "tag" }}标签{{ else }}分类{{ end }}，可以先<a href="{{ "posts/" | relURL }}">浏览所有文章 →</a></p>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

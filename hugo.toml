@@ -1,8 +1,10 @@
 baseURL = 'https://blog.limbmove.com/'
 title = 'LimbMove Blog'
-languageCode = 'zh-CN'
+locale = 'zh-CN'
 defaultContentLanguage = 'zh'
 enableRobotsTXT = true
+hasCJKLanguage = true
+timeZone = 'Asia/Shanghai'
 
 [params]
   description = '记录技术探索、学习笔记与生活灵感。'
@@ -11,3 +13,12 @@ enableRobotsTXT = true
 
 [markup.goldmark.renderer]
   unsafe = false
+
+[markup.highlight]
+  style = 'github-dark'
+  noClasses = true
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+  ordered = false

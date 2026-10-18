@@ -1,0 +1,6 @@
+{{ define "main" }}
+  <section class="list-page">
+    <header class="page-heading"><p class="section-kicker" lang="en">TOPIC</p><h1>{{ .Title }}</h1><p class="list-intro">这个主题下的文章。</p></header>
+    <div class="post-list">{{ range .RegularPages.ByDate.Reverse }}{{ partial "post-row.html" . }}{{ end }}</div>
+  </section>
+{{ end }}
