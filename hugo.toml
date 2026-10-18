@@ -1,0 +1,13 @@
+baseURL = 'https://blog.limbmove.com/'
+title = 'LimbMove Blog'
+languageCode = 'zh-CN'
+defaultContentLanguage = 'zh'
+enableRobotsTXT = true
+
+[params]
+  description = '记录技术探索、学习笔记与生活灵感。'
+  subtitle = 'Notes on engineering, ideas and everyday discoveries.'
+  author = 'LimbMove'
+
+[markup.goldmark.renderer]
+  unsafe = false

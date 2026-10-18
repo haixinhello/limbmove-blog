@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <section class="hero">
+    <div class="eyebrow"><span class="status-dot"></span> 一个持续生长的数字角落</div>
+    <h1>记录想法。<br><span class="accent">保持好奇。</span></h1>
+    <p class="hero-description">{{ site.Params.description }}<br><span>{{ site.Params.subtitle }}</span></p>
+    <div class="hero-actions"><a class="primary-button" href="/posts/">阅读文章 <span aria-hidden="true">↗</span></a><a class="ghost-button" href="/about/">关于这个博客 →</a></div>
+  </section>
+  <section class="latest" aria-labelledby="latest-title">
+    <div class="section-header"><div><div class="section-kicker">RECENT WRITING</div><h2 id="latest-title">最新文章</h2></div><a href="/posts/" class="all-link">查看全部 →</a></div>
+    <div class="post-list">
+      {{ $posts := where site.RegularPages "Section" "posts" }}
+      {{ range first 8 ($posts.ByDate.Reverse) }}
+        <article class="post-row"><a href="{{ .RelPermalink }}" class="post-link"><div><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006 / 01 / 02" }}</time><h3>{{ .Title }}</h3><p>{{ .Summary | plainify | truncate 120 }}</p></div><span class="post-arrow" aria-hidden="true">↗</span></a></article>
+      {{ else }}
+        <div class="empty">还没有文章，敬请期待。</div>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}
